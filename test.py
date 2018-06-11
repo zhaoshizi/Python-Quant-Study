@@ -121,7 +121,6 @@ print(pp_array)
 change_array = list(map(lambda pp: reduce(lambda a, b:round((b-a) / a, 3),pp), pp_array))
 change_array.insert(0,0)
 print(change_array)
-
 #使用namedtuple重新构建数据结构
 stock_namedtuple = namedtuple('stock',('date','price','change'))
 #通过zip分别从date_array,price_array,change_array拿数据组成stock_namedtuple然后以date作为key组成OrderedDict
