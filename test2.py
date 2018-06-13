@@ -130,11 +130,17 @@ trade_days = StockTradeDays(price_array,date_base)
 #print(trade_days.filter_stock())
 
 import sys
+from os import popen
+#获取计算机名
+hostname = popen('hostname').read()
 #windows下的路径不加r开头，会语法错误
 #在sys.path的开头加上搜索路径
 #sys.path.insert(0,r'H:\documents\study\Python\abu')
 #在sys.path的结尾加上搜索路径
-sys.path.append(r'H:\documents\study\Python\abu')
+if hostname == '031212BG01\n':
+    sys.path.append(r'D:\ZhouShuai\Source\Python\abu')
+else:
+    sys.path.append(r'H:\documents\study\Python\abu')
 #print(sys.modules)
 from abupy import ABuSymbolPd
 
@@ -143,3 +149,10 @@ price_array = ABuSymbolPd.make_kl_df('TSLA',n_folds=2).close.tolist()
 #两年的TSLA收盘日期to list()
 date_array = ABuSymbolPd.make_kl_df('TSLA',n_folds=2).date.tolist()
 print(price_array[:5],date_array[:5])
+
+#这里传入date_array，在StockTradeDays中_init_days()会直接使用传入的时间序列
+trade_days = StockTradeDays(price_array,date_base,date_array)
+print('trade_days 对象长度为：{}'.format(len(trade_days)))
+#使用索引-1获取最后一天的交易数据
+print('最后一天交易数据为：{}'.format(trade_days[-1]))
+
