@@ -109,7 +109,69 @@ class TradeLoopBack(object):
                 #卖出策略执行
                 self.trade_strategy.sell_strategy(ind,day,self.trade_days)
 
+class TradeStrategy2(TradeStrategyBase):
+    """
+    交易策略2：均值回复策略，当股份连续两个交易日下跌，
+    且下跌幅度超过阀值默认s_buy_change_threshold(-10%),
+    买入股票并持有s_keep_stock_threshold(10)天
+    """
+    #买入后持有天数
+    s_keep_stock_threshold = 10
+    #下跌买入阀值
+    s_buy_change_threshold = -0.10
+
+    def __init__(self):
+        self.keep_stock_day = 0
+    def buy_strategy(self,trade_ind,trade_day,trade_days):
+        if self.keep_stock_day ==0 and trade_ind >=1:
+            """
+            当没有持有股票的时候self.keep_stock_day == 0 并且
+            trade_ind >=1 ，不是交易开始的第一天，因为需要昨天的数据
+            """
+            #trade_day.change<0 bool:今天股份是否下跌
+            today_down = trade_day.change <0
+            #昨天股价是否下跌
+            yesterday_down = trade_days[trade_ind -1 ].change <0
+            #两天总跌幅
+            down_rate = trade_day.change + trade_days[trade_ind -1].change
+            if today_down and yesterday_down and down_rate < TradeStrategy2.s_buy_change_threshold:
+                #买入条件成立：连跌两天，跌幅超过s_buy_change_threshold
+                self.keep_stock_day +=1
+        elif self.keep_stock_day >0:
+            #self.s_keep_stock_day >0 代表持有股票，持有股票天数递增
+            self.keep_stock_day += 1
+
+    def sell_strategy(self,trade_ind,trade_day,trade_days):
+        if self.keep_stock_day>= TradeStrategy2.s_keep_stock_threshold:
+            #当持有股票天数超过阀值s_keep_stock_threshold，卖出股票
+            self.keep_stock_day = 0
+
+    @classmethod
+    def set_keep_stock_threshold(cls,keep_stock_threshold):
+        cls.s_keep_stock_threshold = keep_stock_threshold
+    @staticmethod
+    def set_buy_change_threshold(buy_change_threshold):
+        TradeStrategy2.s_buy_change_threshold = buy_change_threshold
+    
 
 trade_loop_back = TradeLoopBack(test2.trade_days,TradeStrategy1())
 trade_loop_back.execute_trade()
 print('回测策略1总盈亏为:{}%'.format(reduce(lambda a,b:a+b,trade_loop_back.profit_array)*100))
+
+trade_strategy2 = TradeStrategy2()
+trade_loop_back = TradeLoopBack(test2.trade_days,trade_strategy2)
+trade_loop_back.execute_trade()
+print('回测策略2总盈亏为：{}%'.format(reduce(lambda a,b:a+b,trade_loop_back.profit_array)*100))
+
+"""
+装饰器@classmethod和@staticmethod来表明方法为类方法和静态方法，通过类名.方法名()的形式调用：
+@calssmethod不需要self参数，但第一个参数需要是表示自身类的cls参数
+@staticmethod不需要任何参数
+"""
+trade_strategy2 = TradeStrategy2()
+TradeStrategy2.set_keep_stock_threshold(20)
+TradeStrategy2.set_buy_change_threshold(-0.08)
+trade_loop_back = TradeLoopBack(test2.trade_days,trade_strategy2)
+trade_loop_back.execute_trade()
+print('回测策略2总盈亏为：{}%'.format(reduce(lambda a,b:a+b,trade_loop_back.profit_array)*100))
+#plt.plot(np.array(trade_loop_back.profit_array).cumsum())
