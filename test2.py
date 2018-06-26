@@ -87,11 +87,10 @@ class StockTradeDays(object):
             change_sum += day.change
         return change_sum
 
-
     def __str__(self):
         return str(self.stock_dict)
-    __repr__ = __str__
 
+    __repr__ = __str__
 
     def __iter__(self):
         """
@@ -104,19 +103,18 @@ class StockTradeDays(object):
         for key in self.stock_dict:
             yield self.stock_dict[key]
 
-
     def __getitem__(self, ind):
         date_key = self.__date_array[ind]
         return self.stock_dict[date_key]
 
-
     def __len__(self):
         return len(self.stock_dict)
+
 
 price_array = '30.14,29.58,26.36,32.56,32.82'.split(',')
 date_base = 20170118
 #从StockTradeDays类初始化一个对象trade_days,内部会调用__init__
-trade_days = StockTradeDays(price_array,date_base)
+trade_days = StockTradeDays(price_array, date_base)
 #打印对象信息
 #print(trade_days)
 #print(len(trade_days))
@@ -124,8 +122,8 @@ trade_days = StockTradeDays(price_array,date_base)
 #判断trade_days对象是否支持迭代
 #如果trade_days是可迭代对象，依次打印出
 #if isinstance(trade_days, Iterable):
-    #for day in trade_days:
-        #print(day)
+#for day in trade_days:
+#print(day)
 
 #print(trade_days.filter_stock())
 
@@ -136,23 +134,22 @@ hostname = popen('hostname').read()
 #windows下的路径不加r开头，会语法错误
 #在sys.path的开头加上搜索路径
 #sys.path.insert(0,r'H:\documents\study\Python\abu')
-#在sys.path的结尾加上搜索路径
-if hostname == '031212BG01\n':
-    sys.path.append(r'D:\ZhouShuai\Source\Python\abu')
-else:
-    sys.path.append(r'H:\documents\study\Python\abu')
+#在sys.path的结尾加上搜索路径，已把这个文件夹拷贝到Python36\Lib\site-packages\abupy下，不用加路径了
+# if hostname == '031212BG01\n':
+#     sys.path.append(r'D:\ZhouShuai\Source\Python\abu')
+# else:
+#     sys.path.append(r'H:\documents\study\Python\abu')
 #print(sys.modules)
 from abupy import ABuSymbolPd
 
 #两年的TSLA收盘数据to list()
-price_array = ABuSymbolPd.make_kl_df('TSLA',n_folds=2).close.tolist()
+price_array = ABuSymbolPd.make_kl_df('TSLA', n_folds=2).close.tolist()
 #两年的TSLA收盘日期to list()
-date_array = ABuSymbolPd.make_kl_df('TSLA',n_folds=2).date.tolist()
-print(price_array[:5],date_array[:5])
+date_array = ABuSymbolPd.make_kl_df('TSLA', n_folds=2).date.tolist()
+print(price_array[:5], date_array[:5])
 
 #这里传入date_array，在StockTradeDays中_init_days()会直接使用传入的时间序列
-trade_days = StockTradeDays(price_array,date_base,date_array)
+trade_days = StockTradeDays(price_array, date_base, date_array)
 print('trade_days 对象长度为：{}'.format(len(trade_days)))
 #使用索引-1获取最后一天的交易数据
 print('最后一天交易数据为：{}'.format(trade_days[-1]))
-
