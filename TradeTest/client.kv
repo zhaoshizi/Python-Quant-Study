@@ -1,0 +1,121 @@
+#:kivy 1.4
+#: import ListAdapter kivy.adapters.listadapter.ListAdapter
+#: import CompositeListItem kivy.uix.listview.CompositeListItem
+#: import ScrollView kivy.uix.scrollview.ScrollView
+<ClientOperation>:
+    orientation: 'vertical'
+    padding: 20
+    spacing: 5
+    BoxLayout:
+    	size_hint_y: None
+    	height:'30dp'
+    	Label:
+    		text:"operation:"
+    		size_hint: None,None
+    		width: 80
+    		height: 30
+    	Spinner:
+            id: operation
+        	text: "None"
+        	values: "None","sell", "buy", "balance", "cancel","position","trades","entrust","stop","login","logout"
+        	size_hint: (None, None)
+        	size: 80, 30
+    	
+    BoxLayout:
+    	size_hint_y: None
+    	height:'30dp'
+    	Label:
+    		text:"code:"
+    		size_hint: None,None
+    		width: 80
+    		height: 30
+    	TextInput:
+    		id: code
+    		text:""
+    		size_hint: None,None
+    		width: 80
+    		height: 30
+    BoxLayout:
+    	size_hint_y: None
+    	height:'30dp'
+    	Label:
+    		text:"name:"
+    		size_hint: None,None
+    		width: 80
+    		height: 30
+    	TextInput:
+    		id: name
+    		text:""
+    		size_hint: None,None
+    		width: 80
+    		height: 30
+    BoxLayout:
+    	size_hint_y: None
+    	height:'30dp'
+    	Label:
+    		text:"price:"
+    		size_hint: None,None
+    		width: 80
+    		height: 30
+    	TextInput:
+    		id: price
+    		text:""
+    		size_hint: None,None
+    		width: 80
+    		height: 30
+    BoxLayout:
+    	size_hint_y: None
+    	height:'30dp'
+    	Label:
+    		text:"volume:"
+    		size_hint: None,None
+    		width: 80
+    		height: 30
+    	TextInput:
+    		id: volume
+    		text:""
+    		size_hint: None,None
+    		size: 80,30
+    BoxLayout:
+		size_hint_y: None
+    	height:'30dp'
+		spacing: 85
+    	Button:
+    		text:"send"
+    		size_hint: None,None
+    		width: 80
+    		height: 30
+            on_press: root.send()
+		TextInput:
+			id: output
+    		text:""
+    		size_hint: 0.5,6.8
+			readonly: True
+	ScrollView:
+		size_hint: 1,1
+		BoxLayout:
+			id: ScrollView_layout
+			size_hint: None,1
+			orientation: 'vertical'
+			#Label:
+			#	text:"volume:"
+			#	size_hint: None,1
+			#	width: 1750
+			#	height: 30
+	#BoxLayout:
+	#	id: listview_header_layout
+	#	size_hint_y: None
+	#	size_hint_x: None
+	#	height:'25dp'
+	#BoxLayout:
+	#	id: listview_layout
+	#	size_hint: None,1
+	#	orientation: 'vertical'
+			ListView:
+				id: listview
+				item_strings:'aaaaaaaaaaaa'
+			#	adapter:
+			#		ListAdapter(data=[],args_converter=root.args_converter,cls=CompositeListItem)		
+				size_hint_y: 1
+				size_hint_x: None
+				width:'1000dp'
