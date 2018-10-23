@@ -38,7 +38,7 @@ print ("train_set_y shape: " + str(train_set_y.shape))
 print ("test_set_x shape: " + str(test_set_x_orig.shape))
 print ("test_set_y shape: " + str(test_set_y.shape))
 
-# A trick when you want to flatten a matrix X of shape (a,b,c,d) to a matrix X_flatten of shape (b$*$c$*$d, a) is to use:
+# A trick when you want to flatten a matrix X of shape (a,b,c,d) to a matrix X_flatten of shape (b*c*d, a) is to use:
 # X_flatten = X.reshape(X.shape[0], -1).T      # X.T is the transpose of X
 train_set_x_flatten = train_set_x_orig.reshape(train_set_x_orig.shape[0], -1).T
 test_set_x_flatten = test_set_x_orig.reshape(test_set_x_orig.shape[0], -1).T
@@ -72,3 +72,12 @@ test_set_x = test_set_x_flatten / 255
 def sigmoid(z):
     # 应用sigmod激活函数
     return 1 / (1 + np.exp(-z))
+
+def initializingParameters(dim):
+    W = np.random.random((dim,1)) * 0.01
+    #B = np.random.random((1,1)) * 0.01
+    B = 0
+
+    assert(W.shape == (dim, 1))
+    assert(isinstance(B, float) or isinstance(B, int))
+    return W,B
