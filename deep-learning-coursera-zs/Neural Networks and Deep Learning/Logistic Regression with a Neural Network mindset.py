@@ -69,7 +69,7 @@ test_set_x = test_set_x_flatten / 255
 #   Calculate current gradient (backward propagation)
 #   Update parameters (gradient descent)
 
-def sigmoid(z):
+def sigmod(z):
     # 应用sigmod激活函数
     return 1 / (1 + np.exp(-z))
 
@@ -81,3 +81,49 @@ def initializingParameters(dim):
     assert(W.shape == (dim, 1))
     assert(isinstance(B, float) or isinstance(B, int))
     return W,B
+
+def loss_fun(A,Y):
+    loss = np.sum(np.dot(Y,np.log(A)) + np.dot((1-Y),np.log(1-A)))/A.shape[1]
+    print("loss_fun: " + str(loss))
+
+def train(train_set_x,train_set_y,W,B):
+
+    # 学习率
+    i = 0.5
+    for j in range(15000):
+        A,Z = think(train_set_x,W,B)
+
+        if i % 1000 == 0:
+            loss_fun(A,train_set_y)
+
+        dZ = A - train_set_y
+
+        dw = np.dot(train_set_x,dZ.T)/m_train
+
+        db = np.sum(dZ)/m_train
+
+        W = W - i*dw
+
+        B = B - i*db
+
+    return W,B
+
+
+
+def think(train_set_x,W,B):
+    Z = np.dot(W.T,train_set_x)
+
+    A = sigmod(Z)
+
+    return A,Z
+
+def test(test_set_x,test_set_y,W,B):
+    
+    test_A,test_Z = think(test_set_x,W,B)
+
+    result = test_A ^ test_set_y
+    succeed_cnt = np.sum(result)
+
+    succeed_percent = succeed_cnt / test_set_y.shape[1]
+
+    print("succeed: %d, succeed percent: %f" % succeed_cnt,succeed_percent)
