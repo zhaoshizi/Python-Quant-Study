@@ -40,7 +40,7 @@ class NeuralNetwork():
         # 转化为浮点型数据类型
 
         inputs = inputs.astype(float)
-        # 一般在做sigmod之前，还会加个值
+        # 一般在做sigmod之前，还会加个值B
         output = self.sigmod(np.dot(inputs,self.synaptic_weights))
         return output
 

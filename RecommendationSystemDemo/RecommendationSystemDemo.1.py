@@ -33,7 +33,7 @@ plt.show()
 sns.jointplot(x='rating',y='number_of_ratings',data=ratings)
 plt.show()
 
-# 将数据集转换为一个矩阵，以电影标题为列，以user_id为索引，以评分为值
+# 将数据集转换为一个矩阵，以电影标题为列，以userId为索引，以评分为值
 movie_matrix = df.pivot_table(index='userId',columns='title',values='rating')
 print(movie_matrix.head())
 
@@ -74,3 +74,4 @@ print(corr_AFO_fix.head())
 corr_contact_fix = corr_contact[corr_contact['number_of_ratings'] > 100].sort_values(by='Correlation',ascending=False)
 print(corr_contact_fix.head())
 
+corr_contact_and_AFO = corr_contact_fix.merge(corr_AFO_fix['Correlation'])
