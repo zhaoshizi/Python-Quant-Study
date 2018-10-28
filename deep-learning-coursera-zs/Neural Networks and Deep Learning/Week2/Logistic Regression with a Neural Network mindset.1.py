@@ -93,7 +93,7 @@ def loss_fun(A,Y):
     # A的值不能为0或1，log会取到负无穷
     A[A<0.000000000001] = 0.000000000001
     A[A>0.999999999999] = 0.999999999999
-    loss = np.sum((Y * np.log(A)) + ((1-Y) * np.log(1-A)))/A.shape[1]
+    loss = (-1/A.shape[1]) * np.sum((Y * np.log(A)) + ((1-Y) * np.log(1-A)))
     print("loss_fun: " + str(loss))
 
 def train(train_set_x,train_set_y,W,B):
